@@ -29,3 +29,88 @@
 
   - El lunes 3 de noviembre a las 23:59 h.
   - Tened en cuenta la penalización establecida como es habitual.
+
+  ---
+
+  # Project Proposal (English)
+
+  ## Project Title
+  GitHub Explorer — Async API Search with an Interactive UI
+
+  ## Goal
+  Build a standalone Angular application that allows users to search public GitHub repositories and explore results with a clean, reactive interface.
+
+  ## Implemented Stack
+  - Angular 20 (standalone components)
+  - Signals for reactive UI state
+  - HttpClient for API requests
+  - RxJS for async flow and error handling
+
+  ## Implemented Features
+  - Search input to query GitHub repositories.
+  - API integration with `GET https://api.github.com/search/repositories`.
+  - Loading state with spinner while request is in progress.
+  - Error state handling (network issues, invalid query, and API rate limit errors such as HTTP 403).
+  - Empty initial state and explicit “no results” state after a search.
+  - Repository cards showing:
+    - repository name and owner,
+    - stars, forks, watchers, open issues,
+    - description and topics,
+    - quick actions to open the repository/owner profile.
+  - Optional filters:
+    - programming language,
+    - minimum stars.
+
+  ## Project Structure
+  - `github-explorer/src/app/components/search-bar/*` → search + filters UI.
+  - `github-explorer/src/app/components/repository-list/*` → loading/error/empty/results states.
+  - `github-explorer/src/app/components/repository-card/*` → repository detail card.
+  - `github-explorer/src/app/services/github.service.ts` → API calls and state signals.
+  - `github-explorer/src/app/models/repository.model.ts` → typed response models.
+
+  ## Run Locally (CachyOS / Linux)
+  1. Open terminal in project root:
+    - `cd github-explorer`
+  2. Install dependencies:
+    - `npm install`
+  3. Run development server:
+    - `npm start`
+  4. Open browser at:
+    - `http://localhost:4200`
+
+  ## Build
+  - `npm run build`
+
+  Build validated successfully in this environment.
+
+  ## Screenshot Checklist (for submission)
+  - [ ] Home screen before searching (empty initial state).
+  - [ ] Search in progress (loading spinner visible).
+  - [ ] Search results list with several repository cards.
+  - [ ] Filter panel open (language and minimum stars).
+  - [ ] “No results” state with a query that returns nothing.
+  - [ ] Error state example (rate limit or invalid query response).
+
+  ## Deploy to GitHub Pages
+
+  ### 1) Install deployment helper
+  - `cd github-explorer`
+  - `npm install --save-dev angular-cli-ghpages`
+
+  ### 2) Build for GitHub Pages
+  Replace `<REPO_NAME>` with your repository name.
+  - `npm run build -- --configuration production --base-href /<REPO_NAME>/`
+
+  ### 3) Publish to `gh-pages`
+  - `npx angular-cli-ghpages --dir=dist/github-explorer/browser`
+
+  ### 4) Enable Pages in GitHub
+  - Go to repository **Settings → Pages**.
+  - Set **Source** to `Deploy from a branch`.
+  - Select branch `gh-pages` and folder `/ (root)`.
+
+  ### 5) Open deployed site
+  - `https://<GITHUB_USERNAME>.github.io/<REPO_NAME>/`
+
+  ### Quick command (after first setup)
+  - `cd github-explorer && npm run deploy`

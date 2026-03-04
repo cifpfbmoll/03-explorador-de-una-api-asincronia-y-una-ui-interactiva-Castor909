@@ -1,0 +1,57 @@
+<div class="repository-list-container">
+  <!-- Error Message -->
+  @if (githubService.error()) {
+    <div class="error-message">
+      <div class="error-content">
+        <span class="error-icon">⚠️</span>
+        <p>{{ githubService.error() }}</p>
+      </div>
+      <button class="close-error" (click)="closeError()">✕</button>
+    </div>
+  }
+
+  <!-- Loading State -->
+  @if (githubService.isLoading()) {
+    <div class="loading-container">
+      <div class="spinner"></div>
+      <p class="loading-text">Searching repositories...</p>
+    </div>
+  }
+
+  <!-- Empty State (No Search Yet) -->
+  @if (!githubService.isLoading() && !githubService.hasSearched() && !githubService.error()) {
+    <div class="empty-state">
+      <div class="empty-icon">🔍</div>
+      <h2>Search GitHub Repositories</h2>
+      <p>Enter a search term above to find repositories</p>
+      <div class="suggestions">
+        <p>Try searching for:</p>
+        <div class="suggestion-tags">
+          <span class="suggestion-tag">react</span>
+          <span class="suggestion-tag">vue</span>
+          <span class="suggestion-tag">angular</span>
+          <span class="suggestion-tag">typescript</span>
+          <span class="suggestion-tag">python</span>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- Repository List -->
+  @if (!githubService.isLoading() && githubService.repositories().length > 0) {
+    <div class="repositories-grid">
+      @for (repo of githubService.repositories(); track repo.id) {
+        <app-repository-card [repository]="repo"></app-repository-card>
+      }
+    </div>
+  }
+
+  <!-- No Results State -->
+  @if (!githubService.isLoading() && githubService.hasSearched() && githubService.totalCount() === 0 && !githubService.error() && githubService.repositories().length === 0) {
+    <div class="no-results">
+      <div class="no-results-icon">😕</div>
+      <h2>No repositories found</h2>
+      <p>Try adjusting your search terms or filters</p>
+    </div>
+  }
+</div>

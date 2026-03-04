@@ -1,0 +1,76 @@
+<div class="search-container">
+  <div class="search-bar">
+    <input 
+      type="text" 
+      class="search-input"
+      placeholder="Search GitHub repositories..."
+      [ngModel]="searchQuery()"
+      (ngModelChange)="searchQuery.set($event)"
+      (keypress)="onKeyPress($event)"
+      [disabled]="githubService.isLoading()"
+    />
+    <button 
+      class="search-button" 
+      (click)="onSearch()"
+      [disabled]="!searchQuery().trim() || githubService.isLoading()"
+    >
+      @if (!githubService.isLoading()) {
+        <span>🔍 Search</span>
+      } @else {
+        <span>⏳ Searching...</span>
+      }
+    </button>
+    <button 
+      class="filter-button" 
+      (click)="toggleFilters()"
+      [class.active]="showFilters()"
+    >
+      🎛️ Filters
+    </button>
+  </div>
+
+  @if (showFilters()) {
+    <div class="filters-panel">
+      <h3>Filter Results</h3>
+      
+      <div class="filter-group">
+        <label for="language">Language:</label>
+        <select 
+          id="language" 
+          class="filter-select"
+          [value]="githubService.selectedLanguage() || ''"
+          (change)="onLanguageChange($any($event.target).value)"
+        >
+          <option value="">All Languages</option>
+          @for (lang of languages; track lang) {
+            <option [value]="lang">{{ lang }}</option>
+          }
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label for="minStars">Minimum Stars:</label>
+        <input 
+          type="number" 
+          id="minStars" 
+          class="filter-input"
+          [value]="githubService.minStars()"
+          (input)="onMinStarsChange($any($event.target).value)"
+          min="0"
+          placeholder="0"
+        />
+      </div>
+
+      <div class="filter-actions">
+        <button class="apply-button" (click)="applyFilters()">Apply Filters</button>
+        <button class="clear-button" (click)="clearFilters()">Clear Filters</button>
+      </div>
+    </div>
+  }
+
+  @if (githubService.totalCount() > 0) {
+    <div class="results-count">
+      Found {{ githubService.totalCount() }} repositories
+    </div>
+  }
+</div>

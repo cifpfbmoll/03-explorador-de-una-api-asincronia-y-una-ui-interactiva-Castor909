@@ -1,0 +1,23 @@
+<div class="app-container">
+  <header class="app-header">
+    <div class="header-content">
+      <h1 class="app-title">
+        <span class="github-icon">⚡</span>
+        {{ title() }}
+      </h1>
+      <p class="app-subtitle">Search and explore GitHub repositories</p>
+    </div>
+  </header>
+
+  <main class="app-main">
+    <app-search-bar></app-search-bar>
+    <app-repository-list></app-repository-list>
+  </main>
+
+  <footer class="app-footer">
+    <p>Built with Angular 20 | Using GitHub API</p>
+    <p>Created for Web Development Course</p>
+  </footer>
+</div>
+
+<router-outlet />

@@ -1,0 +1,92 @@
+<div class="repository-card">
+  <div class="card-header">
+    <img 
+      [src]="repository.owner.avatar_url" 
+      [alt]="repository.owner.login"
+      class="owner-avatar"
+      (click)="openOwnerProfile()"
+    />
+    <div class="repo-info">
+      <h3 class="repo-name" (click)="openRepository()">
+        {{ repository.name }}
+      </h3>
+      <p class="repo-owner">by {{ repository.owner.login }}</p>
+    </div>
+    @if (repository.language) {
+      <span class="language-badge" [attr.data-language]="repository.language.toLowerCase()">
+        {{ repository.language }}
+      </span>
+    }
+  </div>
+
+  <p class="repo-description">
+    {{ repository.description || 'No description available' }}
+  </p>
+
+  <div class="repo-stats">
+    <div class="stat">
+      <span class="stat-icon">⭐</span>
+      <span class="stat-value">{{ formatNumber(repository.stargazers_count) }}</span>
+      <span class="stat-label">Stars</span>
+    </div>
+    <div class="stat">
+      <span class="stat-icon">🔱</span>
+      <span class="stat-value">{{ formatNumber(repository.forks_count) }}</span>
+      <span class="stat-label">Forks</span>
+    </div>
+    <div class="stat">
+      <span class="stat-icon">👁️</span>
+      <span class="stat-value">{{ formatNumber(repository.watchers_count) }}</span>
+      <span class="stat-label">Watchers</span>
+    </div>
+    <div class="stat">
+      <span class="stat-icon">⚠️</span>
+      <span class="stat-value">{{ repository.open_issues_count }}</span>
+      <span class="stat-label">Issues</span>
+    </div>
+  </div>
+
+  @if (repository.topics && repository.topics.length > 0) {
+    <div class="repo-topics">
+      @for (topic of repository.topics.slice(0, 5); track topic) {
+        <span class="topic-tag">{{ topic }}</span>
+      }
+    </div>
+  }
+
+  <div class="card-footer">
+    <button class="details-button" (click)="toggleDetails()">
+      @if (showDetails()) {
+        <span>▲ Hide Details</span>
+      } @else {
+        <span>▼ Show Details</span>
+      }
+    </button>
+    <button class="visit-button" (click)="openRepository()">
+      Visit Repository →
+    </button>
+  </div>
+
+  @if (showDetails()) {
+    <div class="details-panel">
+      <div class="detail-row">
+        <span class="detail-label">Created:</span>
+        <span class="detail-value">{{ formatDate(repository.created_at) }}</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">Updated:</span>
+        <span class="detail-value">{{ formatDate(repository.updated_at) }}</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">Full Name:</span>
+        <span class="detail-value">{{ repository.full_name }}</span>
+      </div>
+      @if (repository.license) {
+        <div class="detail-row">
+          <span class="detail-label">License:</span>
+          <span class="detail-value">{{ repository.license.name }}</span>
+        </div>
+      }
+    </div>
+  }
+</div>
